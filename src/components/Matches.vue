@@ -156,9 +156,9 @@ export default {
     data() {
         return {
             requestMatch: null,
-            requestMatchOpponent:null,
-            requestMatchSide: null,
-            requestMatchTimelimit: null,
+            requestMatchOpponent: 'happy',
+            requestMatchSide: 'White',
+            requestMatchTimelimit: '20',
             matchId: null,
             getMatchResult: null,
             findMatch: null,

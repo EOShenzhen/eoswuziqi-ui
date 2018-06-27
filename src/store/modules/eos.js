@@ -3,8 +3,9 @@ import Eos from 'eosjs'
 
 const state = {
   eosconfig: {
-    httpEndpoint: 'https://t1readonly.eos.io:443',
+    httpEndpoint: 'http://127.0.0.1:8888',
     chainId: '8be32650b763690b95b7d7e32d7637757a0a7392ad04f1c393872e525a2ce82b',
+    pp: 'fsda',
     expireInSeconds: 60,
     broadcast: true,
     debug: false,
@@ -13,9 +14,9 @@ const state = {
   connectionTimeout: 5000,
   getInfo: null,
   endpoints: [
-    {url: 'https://t1readonly.eos.io:443', ping: 0, lastConnection: 0}
+    {url: 'http://127.0.0.1:8888', ping: 0, lastConnection: 0}
   ],
-  currentEndpoint: {url: 'https://t1readonly.eos.io:443', ping: 0, lastConnection: 0},
+  currentEndpoint: {url: 'http://127.0.0.1:8888', ping: 0, lastConnection: 0},
   endpointConnectionStatus: 10,
   endpointRefreshInterval: 5000,
   currentMatch: {opponent: null, matchid: null, host: null},
@@ -73,6 +74,7 @@ const mutations = {
 
 const actions = {
   pingEndpoint ({ commit, state }) {
+    console.log('pingEndpoint', state.eosconfig)
     return new Promise((resolve, reject) => {
       if (state.currentEndpoint !== null) {
         var eos = Eos(state.eosconfig)
@@ -197,12 +199,17 @@ const actions = {
     console.log('matchObj', matchObj)
     commit('EXTEND_UNLOCK')
     return new Promise((resolve, reject) => {
-      var conf = Object.assign({}, state.eosconfig)
+      console.log('state.eosconfig', state.eosconfig)
+      let newpp = Object.assign({chainId: '8be32650b763690b95b7d7e32d7637757a0a7392ad04f1c393872e525a2ce82b'}, state.eosconfig)
+      console.log('newpp', newpp)
+      var conf = Object.assign({}, newpp)
+      console.log('qian conf:', conf)
       conf.keyProvider = rootState.wallet.privateKey
       conf.authorization = rootState.wallet.wallet.name + '@active'
       conf.scope = [rootState.wallet.wallet.name, matchObj.opponent, 'chess'].sort()
       console.log([rootState.wallet.wallet.name, 'chess', matchObj.opponent])
       var eos = Eos(conf)
+      console.log('conf: ', conf)
       eos.contract('chess').then(chess => {
         eos.transaction({
           scope: conf.scope,
