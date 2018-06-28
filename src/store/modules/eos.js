@@ -5,7 +5,7 @@ const state = {
   eosconfig: {
     httpEndpoint: 'http://127.0.0.1:8888',
     chainId: '8be32650b763690b95b7d7e32d7637757a0a7392ad04f1c393872e525a2ce82b',
-    pp: 'fsda',
+    pp: 'ppppp',
     expireInSeconds: 60,
     broadcast: true,
     debug: false,
@@ -74,15 +74,16 @@ const mutations = {
 
 const actions = {
   pingEndpoint ({ commit, state }) {
+    // debugger
     console.log('pingEndpoint', state.eosconfig)
     return new Promise((resolve, reject) => {
       if (state.currentEndpoint !== null) {
-        var eos = Eos(state.eosconfig)
-        var pingStart = new Date().getTime()
-        var timeout = setTimeout(function () { reject(Error('timeout')) }, state.connectionTimeout)
+        let eos = Eos(state.eosconfig)
+        let pingStart = new Date().getTime()
+        let timeout = setTimeout(function () { reject(Error('timeout')) }, state.connectionTimeout)
         eos.getInfo({}).then((res) => {
           clearTimeout(timeout)
-          var ping = new Date().getTime() - pingStart
+          let ping = new Date().getTime() - pingStart
           commit('PING_ENDPOINT_SUCCESS', {getInfo: res, ping: ping})
           resolve(res)
         }, (err) => {
@@ -119,7 +120,7 @@ const actions = {
   },
   findAccount ({ commit, state }, account) {
     return new Promise((resolve, reject) => {
-      var eos = Eos(state.eosconfig)
+      let eos = Eos(state.eosconfig)
       eos.getAccount({account_name: account}).then((res) => {
         resolve(res)
       }, (err) => {
@@ -166,16 +167,16 @@ const actions = {
   },
   getCurrentMatchSet ({ commit, state, rootState }) {
     return new Promise((resolve, reject) => {
-      var tscope
+      let tscope
       if (state.currentMatch.host) {
         tscope = rootState.wallet.wallet.name
       } else {
         tscope = state.currentMatch.opponent
       }
       let parameters = { json: true, scope: tscope, code: 'chess', table: 'matches', limit: 1, lower_bound: state.currentMatch.matchid }
-      var conf = Object.assign({}, state.eosconfig)
+      let conf = Object.assign({}, state.eosconfig)
       conf.scope = ['chess', tscope].sort()
-      var eos = Eos(conf)
+      let eos = Eos(conf)
       eos.getTableRows(parameters).then((res) => {
         resolve(res.rows[0])
       }, (err) => {
@@ -202,13 +203,13 @@ const actions = {
       console.log('state.eosconfig', state.eosconfig)
       let newpp = Object.assign({chainId: '8be32650b763690b95b7d7e32d7637757a0a7392ad04f1c393872e525a2ce82b'}, state.eosconfig)
       console.log('newpp', newpp)
-      var conf = Object.assign({}, newpp)
+      let conf = Object.assign({}, newpp)
       console.log('qian conf:', conf)
       conf.keyProvider = rootState.wallet.privateKey
       conf.authorization = rootState.wallet.wallet.name + '@active'
       conf.scope = [rootState.wallet.wallet.name, matchObj.opponent, 'chess'].sort()
       console.log([rootState.wallet.wallet.name, 'chess', matchObj.opponent])
-      var eos = Eos(conf)
+      let eos = Eos(conf)
       console.log('conf: ', conf)
       eos.contract('chess').then(chess => {
         eos.transaction({
@@ -247,9 +248,9 @@ const actions = {
   updateMatchRequests ({ commit, state, rootState }) {
     return new Promise((resolve, reject) => {
       let parameters = {json: true, scope: rootState.wallet.wallet.name, code: 'chess', table: 'requests'}
-      var conf = Object.assign({}, state.eosconfig)
+      let conf = Object.assign({}, state.eosconfig)
       conf.scope = ['chess', rootState.wallet.wallet.name].sort()
-      var eos = Eos(conf)
+      let eos = Eos(conf)
       eos.getTableRows(parameters).then((res) => {
         if (res && res.rows.length > 0) {
           for (let i = 0; i < res.rows.length; i++) {
@@ -268,9 +269,9 @@ const actions = {
   updateMatchRequested ({ commit, state, rootState }) {
     return new Promise((resolve, reject) => {
       let parameters = {json: true, scope: rootState.wallet.wallet.name, code: 'chess', table: 'requested'}
-      var conf = Object.assign({}, state.eosconfig)
+      let conf = Object.assign({}, state.eosconfig)
       conf.scope = ['chess', rootState.wallet.wallet.name].sort()
-      var eos = Eos(conf)
+      let eos = Eos(conf)
       eos.getTableRows(parameters).then((res) => {
         if (res && res.rows.length > 0) {
           for (let i = 0; i < res.rows.length; i++) {
@@ -289,11 +290,11 @@ const actions = {
   acceptMatch ({ commit, state, rootState }, opponent) {
     commit('EXTEND_UNLOCK')
     return new Promise((resolve, reject) => {
-      var conf = Object.assign({}, state.eosconfig)
+      let conf = Object.assign({}, state.eosconfig)
       conf.keyProvider = rootState.wallet.privateKey
       conf.authorization = rootState.wallet.wallet.name + '@active'
       conf.scope = [rootState.wallet.wallet.name, opponent, 'chess'].sort()
-      var eos = Eos(conf)
+      let eos = Eos(conf)
       eos.contract('chess').then(chess => {
         eos.transaction({
           scope: conf.scope,
@@ -329,11 +330,11 @@ const actions = {
   declineMatch ({ commit, state, rootState }, opponent) {
     commit('EXTEND_UNLOCK')
     return new Promise((resolve, reject) => {
-      var conf = Object.assign({}, state.eosconfig)
+      let conf = Object.assign({}, state.eosconfig)
       conf.keyProvider = rootState.wallet.privateKey
       conf.authorization = rootState.wallet.wallet.name + '@active'
       conf.scope = [rootState.wallet.wallet.name, opponent, 'chess'].sort()
-      var eos = Eos(conf)
+      let eos = Eos(conf)
       eos.contract('chess').then(chess => {
         eos.transaction({
           scope: conf.scope,
@@ -369,17 +370,17 @@ const actions = {
   sendMove ({ commit, state, rootState, dispatch }, steps) {
     commit('EXTEND_UNLOCK')
     return new Promise((resolve, reject) => {
-      var tscope
+      let tscope
       if (state.currentMatch.host) {
         tscope = rootState.wallet.wallet.name
       } else {
         tscope = state.currentMatch.opponent
       }
-      var conf = Object.assign({}, state.eosconfig)
+      let conf = Object.assign({}, state.eosconfig)
       conf.keyProvider = rootState.wallet.privateKey
       conf.authorization = rootState.wallet.wallet.name + '@active'
       conf.scope = ['chess', rootState.wallet.wallet.name, state.currentMatch.opponent].sort()
-      var eos = Eos(conf)
+      let eos = Eos(conf)
       eos.contract('chess').then(chess => {
         eos.transaction({
           scope: conf.scope,
@@ -418,17 +419,17 @@ const actions = {
   sendCastleMove ({ commit, state, rootState, dispatch }, long) {
     commit('EXTEND_UNLOCK')
     return new Promise((resolve, reject) => {
-      var tscope
+      let tscope
       if (state.currentMatch.host) {
         tscope = rootState.wallet.wallet.name
       } else {
         tscope = state.currentMatch.opponent
       }
-      var conf = Object.assign({}, state.eosconfig)
+      let conf = Object.assign({}, state.eosconfig)
       conf.keyProvider = rootState.wallet.privateKey
       conf.authorization = rootState.wallet.wallet.name + '@active'
       conf.scope = ['chess', rootState.wallet.wallet.name, state.currentMatch.opponent].sort()
-      var eos = Eos(conf)
+      let eos = Eos(conf)
       eos.contract('chess').then(chess => {
         eos.transaction({
           scope: conf.scope,

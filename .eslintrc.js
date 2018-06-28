@@ -9,7 +9,7 @@ module.exports = {
   env: {
     browser: true,
   },
-  // https://github.com/standard/standard/blob/master/docs/RULES-en.md
+  // https://github.com/stand/standard/blob/master/docs/RULES-en.md
   extends: 'standard',
   // required to lint *.vue files
   plugins: [
@@ -17,6 +17,7 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
+    'indent': ['error', 2],
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
