@@ -153,7 +153,7 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </router-link>
-        <router-link tag="v-list-tile" to="/matches">
+        <router-link tag="v-list-tile" to="/singapore">
           <v-list-tile-action>
             <v-icon>view_list</v-icon>
           </v-list-tile-action>

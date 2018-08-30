@@ -33,7 +33,7 @@ export default new Router({
         {
           path: 'singapore',
           name: 'singapore',
-          component: require('@/components/Matches').default
+          component: require('@/components/Singapore').default
         },
         {
           path: 'match/:id',
