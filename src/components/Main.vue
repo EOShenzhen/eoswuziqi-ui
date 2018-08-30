@@ -153,6 +153,16 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </router-link>
+        <router-link tag="v-list-tile" to="/matches">
+          <v-list-tile-action>
+            <v-icon>view_list</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="white--text">
+              Singapore
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </router-link>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="blue-grey darken-4" app absolute clipped-left>

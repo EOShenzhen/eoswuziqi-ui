@@ -31,6 +31,11 @@ export default new Router({
           component: require('@/components/Matches').default
         },
         {
+          path: 'singapore',
+          name: 'singapore',
+          component: require('@/components/Matches').default
+        },
+        {
           path: 'match/:id',
           name: 'match',
           component: require('@/components/Match').default
